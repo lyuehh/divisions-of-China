@@ -1,6 +1,6 @@
 var fs = require('fs') 
 var cheerio = require('cheerio')
-var html = fs.readFileSync('./201610.html', {encoding: 'utf-8'})
+var html = fs.readFileSync('./201812.html', {encoding: 'utf-8'})
 var $ = cheerio.load(html)
 
 var $trs = $('table tr')
@@ -57,12 +57,13 @@ for (var i=0;i<$trs.length;i++) {
     } else {
       // 区，县
       // console.log('provId: %d, cityId: %d, id: %s, name: %s, i: %d', provId, cityId, id, name, i);
-
-      ret[provId].children[cityId].children = ret[provId].children[cityId].children || []
-      ret[provId].children[cityId].children.push({
-        id: id,
-        value: name.trim()
-      })
+      if (ret[provId] && ret[provId].children) {
+        ret[provId].children[cityId].children = ret[provId].children[cityId].children || []
+        ret[provId].children[cityId].children.push({
+          id: id,
+          value: name.trim()
+        })
+      }
     }
   }
 }
